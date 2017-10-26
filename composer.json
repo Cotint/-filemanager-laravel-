@@ -13,7 +13,7 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "Cotint\\FileManager": "src/Cotint/FileManager"
+            "Cotint\\FileManager\\": "src/Cotint/FileManager"
         }
     }
 }
