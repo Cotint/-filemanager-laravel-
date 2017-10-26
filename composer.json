@@ -1,0 +1,14 @@
+{
+    "name": "Cotint/fileManager",
+    "description": "A full-featured file manager for laravel",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Saeed",
+            "email": "s.moghadam@cotint.ir"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
