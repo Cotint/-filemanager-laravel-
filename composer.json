@@ -1,5 +1,5 @@
 {
-    "name": "Cotint/fileManager",
+    "name": "Cotint/FileManager",
     "description": "A full-featured file manager for laravel",
     "type": "library",
     "license": "MIT",
@@ -13,7 +13,7 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "Cotint\\FileManager": "src/"
+            "Cotint\\FileManager\\": "src/Cotint/FileManager"
         }
     }
 }
