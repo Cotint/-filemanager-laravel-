@@ -14,7 +14,6 @@ class FileManagerServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/views', 'fileManager');
         $this->loadMigrationsFrom(__DIR__.'/migrations/2017_10_09_055144_create_filemanager_table.php');
         $this->publishes([
-
            __DIR__.'/assets' => public_path('cotint/fileManager'),
         ], 'assets');
 
@@ -29,6 +28,6 @@ class FileManagerServiceProvider extends ServiceProvider
     public function register()
     {
         include __DIR__.'/routes.php';
-        $this->app->make('Cotint\fileManager\FileController');
+        $this->app->make('Cotint\FileManager\FileController');
     }
 }

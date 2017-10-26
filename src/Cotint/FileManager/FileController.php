@@ -3,8 +3,8 @@
 namespace Cotint\FileManager;
 
 use App\Http\Controllers\Controller;
-use Cotint\fileManager\models\File;
-use Cotint\fileManager\Services\FileService;
+use Cotint\FileManager\models\File;
+use Cotint\FileManager\Services\FileService;
 use Illuminate\Http\Request;
 
 class FileController extends Controller

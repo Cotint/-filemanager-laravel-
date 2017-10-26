@@ -65,6 +65,8 @@
 <script>
     Dropzone.autoDiscover = false;
     $(function(){
+        kamaDatepicker('datepicker');
+
         var dropzone = new Dropzone("div#deopzone", {
             url: "/filemanager/upload",
             clickable: '.upload-button'
