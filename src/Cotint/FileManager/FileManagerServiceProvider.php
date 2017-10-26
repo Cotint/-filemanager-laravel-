@@ -1,6 +1,6 @@
 <?php
 
-namespace cotint\fileManager;
+namespace Cotint\FileManager;
 
 use Illuminate\Support\ServiceProvider;
 

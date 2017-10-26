@@ -1,6 +1,6 @@
 <?php
 
-namespace Cotint\fileManager;
+namespace Cotint\FileManager;
 
 use App\Http\Controllers\Controller;
 use Cotint\fileManager\models\File;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cotint\fileManager\models;
+namespace Cotint\FileManager\models;
 
 use Illuminate\Database\Eloquent\Model;
 

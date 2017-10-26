@@ -6,7 +6,7 @@
  * Time: 11:35 AM.
  */
 
-namespace Cotint\fileManager\Services;
+namespace Cotint\FileManager\Services;
 
 class FileService
 {
