@@ -48,7 +48,7 @@
                 </form>
                 </div>
                 <div class="col-md-3 col-xs-3">
-                    <button class="btn btn-default btn-class upload-button"> <i class="fa fa-plus" aria-hidden="true"></i> لطفا عکس خود را اپلود کنید </button>
+                    <button class="btn btn-default btn-class upload-button" type="button"> <i class="fa fa-plus" aria-hidden="true"></i> لطفا عکس خود را اپلود کنید </button>
                 </div>
                 <div class="col-md-12 col-xs-4">
                     <div class="drop-col" id="deopzone">
