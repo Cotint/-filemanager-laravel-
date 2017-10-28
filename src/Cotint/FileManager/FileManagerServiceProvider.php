@@ -29,5 +29,9 @@ class FileManagerServiceProvider extends ServiceProvider
     {
         include __DIR__.'/routes.php';
         $this->app->make('Cotint\FileManager\FileController');
+        if (!file_exists(public_path('uploaded_files'))){
+            mkdir(public_path('uploaded_files'));
+            chmod(public_path('uploaded_files', 775));
+        }
     }
 }
