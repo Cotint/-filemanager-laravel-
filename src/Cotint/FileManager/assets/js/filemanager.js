@@ -53,16 +53,28 @@ $(function(){
             $(value).attr('data-alt', alt);
             $(value).attr('data-desc', description);
             $(value).attr('data-title', title);
+            if ($('.fileManager').attr('data-type') === 'multi'){
+                $('.images-list').append('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
+                    '<button type="button" class="btn btn-success filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
+                    '<input type="hidden" name="files['+image_id+'][url]" value="'+image_url+'"/> ' +
+                    '<input type="hidden" name="files['+image_id+'][id]" value="'+image_id+'"/> ' +
+                    '<input type="hidden" name="files['+image_id+'][name]" value="'+title+'"/> ' +
+                    '<input type="hidden" name="files['+image_id+'][alt]" value="'+alt+'"/> ' +
+                    '<input type="hidden" name="files['+image_id+'][description]" value="'+description+'"/> ' +
+                    '</div>'
+                );
+            } else {
+                $('.images-list').html('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
+                    '<button type="button" class="btn btn-success filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
+                    '<input type="hidden" name="file_url" value="'+image_url+'"/> ' +
+                    '<input type="hidden" name="file_id" value="'+image_id+'"/> ' +
+                    '<input type="hidden" name="file_name" value="'+title+'"/> ' +
+                    '<input type="hidden" name="file_alt" value="'+alt+'"/> ' +
+                    '<input type="hidden" name="file_description" value="'+description+'"/> ' +
+                    '</div>'
+                );
 
-            $('.images-list').append('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
-                '<button type="button" class="btn btn-success filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
-                '<input type="hidden" name="files['+image_id+'][url]" value="'+image_url+'"/> ' +
-                '<input type="hidden" name="files['+image_id+'][id]" value="'+image_id+'"/> ' +
-                '<input type="hidden" name="files['+image_id+'][name]" value="'+title+'"/> ' +
-                '<input type="hidden" name="files['+image_id+'][alt]" value="'+alt+'"/> ' +
-                '<input type="hidden" name="files['+image_id+'][description]" value="'+description+'"/> ' +
-                '</div>'
-            );
+            }
             $.post('/filemanager/save-meta',{
                 id:image_id,
                 description:description,
