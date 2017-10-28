@@ -9,7 +9,22 @@ this package depends on `jqurey` and `bootstrap` frameworks.
 ## Installation
 
 1. installing package by composer:
-`composer require Cotint/FileManager`
+add `repositories` section and the package name in `composer.json` 
+
+    ```
+    "repositories":[
+        {
+            "type":"vcs",
+            "url":"git@gitlab.com:cotint/cotint/filemanager-laravel.git"
+        }
+    ],
+    "require": {
+        ...
+        "Cotint/FileManager": "@dev"
+    }
+    ```
+    
+now run `composer update`
 
 1. add the following line in config/app.php on `providers` section:
 
@@ -26,7 +41,7 @@ this package depends on `jqurey` and `bootstrap` frameworks.
         <script src="/cotint/fileManager/js/dropzone.js"></script>
         <script src="/cotint/fileManager/js/filemanager.js"></script>
         
-3. assign `fileManager` class to a html tag:
+3. assign `fileManager` class to an html tag:
  
         <button type="button" class="fileManager btn">Select File</button>
 
