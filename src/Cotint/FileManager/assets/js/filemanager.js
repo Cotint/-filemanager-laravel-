@@ -52,17 +52,30 @@ $(function(){
             $(value).attr('data-desc', description);
             $(value).attr('data-title', title);
 
-            var order = $('.images-list').find('img').length;
-            $('.images-list').append('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
-                '<button type="button" class="btn btn-success filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
-                '<input type="hidden" name="files['+image_id+'][url]" value="'+image_url+'"/> ' +
-                '<input type="hidden" name="files['+image_id+'][id]" value="'+image_id+'"/> ' +
-                '<input type="hidden" name="files['+image_id+'][name]" value="'+title+'"/> ' +
-                '<input type="hidden" name="files['+image_id+'][alt]" value="'+alt+'"/> ' +
-                '<input type="hidden" name="files['+image_id+'][description]" value="'+description+'"/> ' +
-                '<input type="text" name="files['+image_id+'][order]" value="'+order+'"/> ' +
-                '</div>'
-            );
+            if ($('.fileManager').attr('data-type') === 'multi'){
+                var order = $('.images-list').find('img').length;
+                $('.images-list').append('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
+                    '<button type="button" class="btn btn-success filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
+                    '<input type="hidden" name="files['+image_id+'][url]" value="'+image_url+'"/> ' +
+                    '<input type="hidden" name="files['+image_id+'][id]" value="'+image_id+'"/> ' +
+                    '<input type="hidden" name="files['+image_id+'][name]" value="'+title+'"/> ' +
+                    '<input type="hidden" name="files['+image_id+'][alt]" value="'+alt+'"/> ' +
+                    '<input type="hidden" name="files['+image_id+'][description]" value="'+description+'"/> ' +
+                    '<input type="text" name="files['+image_id+'][order]" value="'+order+'"/> ' +
+                    '</div>'
+                );
+            } else {
+                $('.images-list').html('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
+                    '<button type="button" class="btn btn-success filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
+                    '<input type="hidden" name="file_url" value="'+image_url+'"/> ' +
+                    '<input type="hidden" name="file_id" value="'+image_id+'"/> ' +
+                    '<input type="hidden" name="file_name" value="'+title+'"/> ' +
+                    '<input type="hidden" name="file_alt" value="'+alt+'"/> ' +
+                    '<input type="hidden" name="file_description" value="'+description+'"/> ' +
+                    '</div>'
+                );
+            }
+
             $.post('/filemanager/save-meta',{
                 id:image_id,
                 description:description,
