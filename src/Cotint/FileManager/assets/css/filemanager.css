@@ -1,11 +1,8 @@
 .dz-image {
     cursor: pointer;
-    display: inline-block;
-    width: 134px !important;
 }
 .dz-image img.selected {
     border:2px solid #0d3625;
-    display: inline-block;
 }
 
 /* The Modal (background) */

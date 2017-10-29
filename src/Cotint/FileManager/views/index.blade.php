@@ -118,6 +118,7 @@
                 }
 
             });
+            $(file.previewElement).addClass('col-md-2');
             file.previewElement.appendChild(removeButton);
             $(file.previewElement).find('.dz-image img').css('width','50px');
             $(file.previewElement).find('.dz-image img').attr('data-id',file.id);

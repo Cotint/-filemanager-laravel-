@@ -1,3 +1,8 @@
+
+/*
+ * The MIT License
+ * Copyright (c) 2012 Matias Meno <m@tias.me>
+ */
 @font-face {
     font-family:'sans';
     src:url('../fonts/IRANSans/IRANSansWeb_Light.woff') format('woff'),
@@ -126,16 +131,35 @@ textarea{
     right: 25%;
     color: #fff;
 }
-.div-class{
+.div-class {
     width: 30px;
     height: 30px;
     background-color: #000000;
     position: absolute;
-    top: 11px;
+    top: 100px;
     left: 24px;
-    border:1px solid #000;
 }
-.div-class:hover{
-    background-color: #fff !important;
-    color: #eee;
+.btn-close{
+    float: left;
+    position: relative;
+    top: -200px;
+    right: -20px;
+}
+.btn-save{
+    position: relative;
+    float: left;
+    top: -200px;
+    right: -55px;
+}
+
+.dz-details , .dz-filename{
+    display: none;
+}
+
+textarea{
+    width: 100% !important; ;
+}
+#filemanager-file-desc{
+    width: 100% !important;
+    min-width: 100%;
 }
