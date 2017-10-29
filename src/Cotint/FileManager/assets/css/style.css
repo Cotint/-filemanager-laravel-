@@ -133,4 +133,9 @@ textarea{
     position: absolute;
     top: 11px;
     left: 24px;
+    border:1px solid #000;
+}
+.div-class:hover{
+    background-color: #fff !important;
+    color: #eee;
 }

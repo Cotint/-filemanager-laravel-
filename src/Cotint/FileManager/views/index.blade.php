@@ -102,7 +102,8 @@
             var _this = this;
 
             var removeButton = Dropzone.createElement("<button data-dz-remove " +
-                "class='del_thumbnail btn btn-default'><span class='glyphicon glyphicon-trash'></span></button>");
+                "class='del_thumbnail btn div-class hidden'><i class='fa fa-trash check-id'></i></button>");
+
 
 
             removeButton.addEventListener("click", function (e) {
@@ -126,10 +127,12 @@
             $(file.previewElement).find('.dz-image img').attr('data-alt',file.alt);
         });
 
+
         $(document).on('click','.dz-image', function(){
             $(".dz-image").css("border","1px solid #ccc");
+            $(this).css("border","3px solid #000");
             $('.div-class').addClass('hidden');
-            $(this).css("border","3px solid #000").append( "<div class=\"div-class\"><i class='fa fa-check check-id'></i></div>");
+            $(this).parent().find('.div-class').removeClass('hidden');
             $('img.selected').removeClass('selected');
             $(this).find('img').addClass('selected');
             $('#filemanager-file-name').val($(this).find('img').attr('data-name'));
