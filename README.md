@@ -91,7 +91,7 @@ by adding `data-name` attribute to button element:
 
         <button type="button" data-type="multi" data-name="my_files" class="fileManager btn">Select File</button>
         
-and the following hidden feilds will be added to you form:
+and the following hidden fields will be added to you form:
 
         <input name="my_files[0][url]" value="http://yourdomain.com/uploaded_files/sunset.jpg" type="hidden">
         <input name="my_files[0][id]" value="1" type="hidden">
