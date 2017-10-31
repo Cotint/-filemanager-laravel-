@@ -2,48 +2,34 @@
 
 $(function(){
 
-    $('#fileManager').click(function(e){
-        e.preventDefault();
-
-    });
-
-
-    // $(document).on('submit','form#filemanager-search-form', function(e){
-    //
-    //     $.post($(this).attr('action'),{q: $(this).find('#filemanager-search-input')}, function(data){
-    //
-    //     });
-    //     return false;
-    // });
     var fileMangerButton;
-    $('.fileManager').click(function(){
-       fileMangerButton = this;
-    });
     var modal = '\
-    <div class="images-list"></div> \
-    <div class="modal fade bs-example-modal-lg" id="fileManagerModal" tabindex="-1" role="dialog" aria-labelledby="fileManagerModal"> \
-        <div style="width: 1303px !important;" class="modal-dialog modal-lg" role="document"> \
-            <div class="modal-content"> \
-             <div  class="files-list"></div> \
+        <div class="modal fade bs-example-modal-lg " id="fileManagerModal" tabindex="-1" role="dialog" aria-labelledby="fileManagerModal"> \
+            <div style="width: 1303px !important;" class="modal-dialog modal-lg" role="document"> \
+                <div class="modal-content"> \
+                 <div  class="files-list"></div> \
+                </div> \
+                    <button class="btn btn-close" data-dismiss="modal" aria-hidden="true">بستن</button> \
+                    <button class="btn btn-primary select-image btn-save"  data-dismiss="modal">ذخیره کردن</button> \
             </div> \
-                <button class="btn btn-close" data-dismiss="modal" aria-hidden="true">بستن</button> \
-                <button class="btn btn-primary select-image btn-save"  data-dismiss="modal">ذخیره کردن</button> \
-        </div> \
-    </div> ';
-    $(modal).insertAfter(fileMangerButton);
-    $(fileMangerButton).attr('data-toggle','modal');
-    $(fileMangerButton).attr('data-target','#fileManagerModal');
-    $(this).find('.modal-content .files-list').load('/filemanager/index');
-    $('#fileManagerModal').on('shown.bs.modal', function () {
-        // $(this).find('.modal-content .files-list').load('/filemanager/index');
+        </div> ';
+    $(modal).appendTo('body');
+
+    $(document).find('.modal .modal-content .files-list').load('/filemanager/index');
+    $('.fileManager').attr('data-toggle','modal');
+    $('.fileManager').attr('data-target','#fileManagerModal');
+
+    $.each($('.fileManager'), function(index, item){
+        $(this).click(function(){
+            fileMangerButton = this;
+            $('<div class="images-list"></div>').insertAfter(fileMangerButton)
+            console.log(fileMangerButton);
+        });
     });
 
     $(document).on('click','.select-image',function(){
         var selected_images = $('.dz-image img.selected');
         $.each(selected_images, function(key, value){
-            console.log(value);
-
-
             var image_url = $(value).attr('src');
             var image_id =  $(value).attr('data-id');
             var alt = $('#filemanager-file-alt').val();
@@ -55,6 +41,8 @@ $(function(){
             $(value).attr('data-title', title);
 
             var field_name = $(fileMangerButton).attr('data-name') !== undefined ? $(fileMangerButton).attr('data-name'):'file';
+            console.log('aaaaaaaaaaaaaaaaaaaa');
+            console.log(field_name);
             if ($(fileMangerButton).attr('data-type') === 'multi'){
                 var order = $(fileMangerButton).next('.images-list').find('img').length;
                 $(fileMangerButton).next('.images-list').append('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
