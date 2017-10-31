@@ -8,14 +8,17 @@ $(function(){
     });
 
 
-    $(document).on('submit','form#filemanager-search-form', function(e){
-
-        $.post($(this).attr('action'),{q: $(this).find('#filemanager-search-input')}, function(data){
-
-        });
-        return false;
+    // $(document).on('submit','form#filemanager-search-form', function(e){
+    //
+    //     $.post($(this).attr('action'),{q: $(this).find('#filemanager-search-input')}, function(data){
+    //
+    //     });
+    //     return false;
+    // });
+    var fileMangerButton;
+    $('.fileManager').click(function(){
+       fileMangerButton = this;
     });
-
     var modal = '\
     <div class="images-list"></div> \
     <div class="modal fade bs-example-modal-lg" id="fileManagerModal" tabindex="-1" role="dialog" aria-labelledby="fileManagerModal"> \
@@ -27,11 +30,10 @@ $(function(){
                 <button class="btn btn-primary select-image btn-save"  data-dismiss="modal">ذخیره کردن</button> \
         </div> \
     </div> ';
-    $(modal).insertAfter('.fileManager');
-    $('.fileManager').attr('data-toggle','modal');
-    $('.fileManager').attr('data-target','#fileManagerModal');
+    $(modal).insertAfter(fileMangerButton);
+    $(fileMangerButton).attr('data-toggle','modal');
+    $(fileMangerButton).attr('data-target','#fileManagerModal');
     $(this).find('.modal-content .files-list').load('/filemanager/index');
-
     $('#fileManagerModal').on('shown.bs.modal', function () {
         // $(this).find('.modal-content .files-list').load('/filemanager/index');
     });
@@ -52,10 +54,10 @@ $(function(){
             $(value).attr('data-desc', description);
             $(value).attr('data-title', title);
 
-            var field_name = $('.fileManager').attr('data-name') !== undefined ? $('.fileManager').attr('data-name'):'file';
-            if ($('.fileManager').attr('data-type') === 'multi'){
-                var order = $('.images-list').find('img').length;
-                $('.images-list').append('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
+            var field_name = $(fileMangerButton).attr('data-name') !== undefined ? $(fileMangerButton).attr('data-name'):'file';
+            if ($(fileMangerButton).attr('data-type') === 'multi'){
+                var order = $(fileMangerButton).next('.images-list').find('img').length;
+                $(fileMangerButton).next('.images-list').append('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
                     '<button type="button" class="btn btn-success filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
                     '<input type="hidden" name="'+field_name+'['+image_id+'][url]" value="'+image_url+'"/> ' +
                     '<input type="hidden" name="'+field_name+'['+image_id+'][id]" value="'+image_id+'"/> ' +
@@ -66,7 +68,7 @@ $(function(){
                     '</div>'
                 );
             } else {
-                $('.images-list').html('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
+                $(fileMangerButton).next('.images-list').html('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
                     '<button type="button" class="btn btn-success filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
                     '<input type="hidden" name="'+field_name+'_url" value="'+image_url+'"/> ' +
                     '<input type="hidden" name="'+field_name+'_id" value="'+image_id+'"/> ' +
