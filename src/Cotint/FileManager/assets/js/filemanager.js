@@ -52,7 +52,7 @@ $(function(){
             $(value).attr('data-desc', description);
             $(value).attr('data-title', title);
 
-            var feild_name = $('.fileManager').attr('data-name') !== undefined ? $('.fileManager').attr('data-name'):'';
+            var feild_name = $('.fileManager').attr('data-name') !== undefined ? $('.fileManager').attr('data-name'):'file';
             if ($('.fileManager').attr('data-type') === 'multi'){
                 var order = $('.images-list').find('img').length;
                 $('.images-list').append('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
