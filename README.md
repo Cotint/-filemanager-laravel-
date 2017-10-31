@@ -56,10 +56,51 @@ a file.
 
 Select a file then click on `Save Changes` to add the selected file into your page. This action add some hidden fields as bellow:
 
-        <input name="files[1][url]" value="http://yourdomain.com/uploaded_files/sunset.jpg" type="hidden">
-        <input name="files[1][id]" value="1" type="hidden">
-        <input name="files[1][name]" value="sunset" type="hidden">
-        <input name="files[1][alt]" value="Sunset" type="hidden"> 
-        <input name="files[1][description]" value="a beautiful sunset" type="hidden">
+        <input name="file_url" value="http://yourdomain.com/uploaded_files/sunset.jpg" type="hidden">
+        <input name="file_id" value="1" type="hidden">
+        <input name="file_name" value="sunset" type="hidden">
+        <input name="file_alt" value="Sunset" type="hidden"> 
+        <input name="file_description" value="a beautiful sunset" type="hidden">
+
+## Options
+
+### add multiple files
+
+sometimes you need to add more than one image to your form. For this, just add `data-type="multi"` to your button:
+
+        <button type="button" data-type="multi" class="fileManager btn">Select File</button>
+
+Now you can add multiple files to your form. For access to all files these fields will be added to the current form:
+
+        <input name="file[0][url]" value="http://yourdomain.com/uploaded_files/sunset.jpg" type="hidden">
+        <input name="file[0][id]" value="1" type="hidden">
+        <input name="file[0][name]" value="sunset" type="hidden">
+        <input name="file[0][alt]" value="Sunset" type="hidden"> 
+        <input name="file[0][description]" value="a beautiful sunset" type="hidden">
+        
+        <input name="file[1][url]" value="http://yourdomain.com/uploaded_files/sunset.jpg" type="hidden">
+        <input name="file[1][id]" value="1" type="hidden">
+        <input name="file[1][name]" value="sunset" type="hidden">
+        <input name="file[1][alt]" value="Sunset" type="hidden"> 
+        <input name="file[1][description]" value="a beautiful sunset" type="hidden">
 
 
+### change name attribute
+
+by adding `data-name` attribute to button element:
+
+        <button type="button" data-type="multi" data-name="my_files" class="fileManager btn">Select File</button>
+        
+and the following hidden feilds will be added to you form:
+
+        <input name="my_files[0][url]" value="http://yourdomain.com/uploaded_files/sunset.jpg" type="hidden">
+        <input name="my_files[0][id]" value="1" type="hidden">
+        <input name="my_files[0][name]" value="sunset" type="hidden">
+        <input name="my_files[0][alt]" value="Sunset" type="hidden"> 
+        <input name="my_files[0][description]" value="a beautiful sunset" type="hidden">
+        
+        <input name="my_files[1][url]" value="http://yourdomain.com/uploaded_files/sunset.jpg" type="hidden">
+        <input name="my_files[1][id]" value="1" type="hidden">
+        <input name="my_files[1][name]" value="sunset" type="hidden">
+        <input name="my_files[1][alt]" value="Sunset" type="hidden"> 
+        <input name="my_files[1][description]" value="a beautiful sunset" type="hidden">
