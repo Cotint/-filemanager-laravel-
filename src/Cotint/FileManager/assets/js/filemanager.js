@@ -20,9 +20,9 @@ $(function(){
     $('.fileManager').attr('data-target','#fileManagerModal');
 
     $.each($('.fileManager'), function(index, item){
+        $('<div class="images-list"></div>').insertAfter(this);
         $(this).click(function(){
             fileMangerButton = this;
-            $('<div class="images-list"></div>').insertAfter(fileMangerButton)
             console.log(fileMangerButton);
         });
     });
