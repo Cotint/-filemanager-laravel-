@@ -52,32 +52,51 @@ class FileController extends Controller
         return response()->json($mocks);
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->get('query');
+
+        $files = File::where('name', 'like', '%'.$query.'%')
+            ->orWhere('title', 'like', '%'.$query.'%')
+            ->orWhere('alt', 'like', '%'.$query.'%')
+            ->orWhere('description', 'like', '%'.$query.'%')->get();
+
+        $mocks = $this->fillArrayForDropzone($files);
+
+        return response()->json($mocks);
+    }
+
     public function getAllDocs()
     {
         $files = File::getAllByType(File::TYPE_DOCS);
 
-        return view('fileManager::index', ['files' => $files]);
+        $mocks = $this->fillArrayForDropzone($files);
+
+        return response()->json($mocks);
     }
 
     public function getAllVideos()
     {
         $files = File::getAllByType(File::TYPE_VIDEOS);
+        $mocks = $this->fillArrayForDropzone($files);
 
-        return view('fileManager::index', ['files' => $files]);
+        return response()->json($mocks);
     }
 
     public function getAllImages()
     {
         $files = File::getAllByType(File::TYPE_IMAGES);
 
-        return view('fileManager::index', ['files' => $files]);
+        $mocks = $this->fillArrayForDropzone($files);
+        return response()->json($mocks);
     }
 
     public function getAllArchives()
     {
         $files = File::getAllByType(File::TYPE_ARCHIVE);
+        $mocks = $this->fillArrayForDropzone($files);
 
-        return view('fileManager::index', ['files' => $files]);
+        return response()->json($mocks);
     }
 
     public function delete(Request $request)

@@ -51,7 +51,7 @@ class File extends Model
 
     public static function getAllByType($type)
     {
-        $files = self::whereIn('type', $type)->get();
+        $files = self::whereIn('mime_type', $type)->get();
 
         return $files;
     }

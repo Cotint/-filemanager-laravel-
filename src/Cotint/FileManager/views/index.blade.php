@@ -30,11 +30,12 @@
             <div class="row">
                 <div class="col-md-3 col-xs-3">
                     <div class="form-group margin-top-20">
-                        <select class="form-control" id="sel1">
-                            <option>همه موارد رسانه ها</option>
-                            <option>فیلم</option>
-                            <option>عکس</option>
-                            <option>همه</option>
+                        <select class="form-control" id="media-type">
+                            <option value="all">همه موارد رسانه ها</option>
+                            <option value="videos">فیلم</option>
+                            <option value="images">عکس</option>
+                            <option value="archives">فایلهای فشره</option>
+                            <option value="docs">مستندات</option>
                         </select>
                     </div>
                 </div>
@@ -71,22 +72,8 @@
             url: "/filemanager/upload",
             clickable: '.upload-button'
         });
-        $.getJSON('/filemanager/getAll', function(data) { // get the json response
-            $.each(data, function(key,value){ //loop through it
-                var mockFile = {
-                    name: value.name,
-                    size: value.size,
-                    accepted:true,
-                    id:value.id,
-                    title:value.title,
-                    desc:value.desc,
-                    alt:value.alt
-                };
-                dropzone.emit("addedfile", mockFile);
-                dropzone.files.push(mockFile);
-                dropzone.emit("thumbnail", mockFile, mockFile.name);
-                dropzone.emit("complete", mockFile);
-            });
+        $.getJSON('/filemanager/all', function(data) { // get the json response
+            fillDropzone(data, dropzone);
         });
 
         dropzone.on('init', function(){
@@ -150,7 +137,68 @@
 //                });
 //            }
 //        })
+
+
+        $(document).on('change', '#media-type',function(){
+
+            var type = $(this).find('option:selected').val();
+//            alert('/filemanager/get'+type);
+            dropzone.removeAllFiles(true);
+            $('.drop-col').append('<div class="loading" style="text-align: center;"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>');
+
+            $.getJSON('/filemanager/'+type, function(data) { // get the json response
+                $('.drop-col').find('.loading').remove();
+                fillDropzone(data, dropzone);
+            });
+        })
+
+        $(document).on('keyup', 'input#filemanager-search-input',function(){
+            var query = $(this).val();
+
+            if (query.length < 3 && query.length >0){
+                return;
+            }
+            dropzone.removeAllFiles(true);
+            $('.drop-col').append('<div class="loading" style="text-align: center;"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>');
+
+
+            if (query.length == 0){
+                $.getJSON('/filemanager/all', function(data) { // get the json response
+                    $('.drop-col').find('.loading').remove();
+                    fillDropzone(data, dropzone);
+                });
+                return;
+            }
+
+            $.getJSON('/filemanager/search', {query: query}, function(data) { // get the json response
+                $('.drop-col').find('.loading').remove();
+                fillDropzone(data, dropzone);
+            });
+        })
+
     });
-;
+
+
+    function fillDropzone(data, dropzone){
+        $.each(data, function(key,value){ //loop through it
+            var mockFile = {
+                name: value.name,
+                size: value.size,
+                accepted:true,
+                id:value.id,
+                title:value.title,
+                desc:value.desc,
+                alt:value.alt
+            };
+            dropzone.emit("addedfile", mockFile);
+            dropzone.files.push(mockFile);
+            dropzone.emit("thumbnail", mockFile, mockFile.name);
+            dropzone.emit("complete", mockFile);
+        });
+    }
+
+
+
+
 </script>
 @stop
