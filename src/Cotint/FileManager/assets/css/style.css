@@ -35,9 +35,11 @@ html, body {
     font-family:sansMedium !important;
     font-weight: 100;
     margin: 0;
-    overflow: hidden;
+    /*TODO-ashrafian: hashemi comment this line for scroll problem.*/
+    /*overflow: hidden;*/
 
 }
+
 .form-design{
     height: auto !important;
     min-height: 665px !important;
@@ -96,11 +98,11 @@ textarea{
 }
 .dz-image {
     cursor: pointer;
-    width: 100px !important;
+    width: 150px !important;
     height: 100px;
     margin-top: 20px !important;
     background-color: #ddd;
-    margin-right: 10px;
+    margin-right: -27px;
     border: 1px solid #ccc;
 }
 
@@ -129,7 +131,8 @@ textarea{
     position: absolute;
     top: 5px;
     right: 25%;
-    color: #fff;
+    color: #fff !important;
+    background-color: rgba(0,0,0,0) !important;
 }
 .div-class {
     width: 30px;
@@ -137,7 +140,7 @@ textarea{
     background-color: #000000;
     position: absolute;
     top: 100px;
-    left: 24px;
+    left: 10px;
 }
 .btn-close{
     float: left;
@@ -157,7 +160,8 @@ textarea{
 }
 
 textarea{
-    width: 100% !important; ;
+    width: 100% !important;
+    max-width: 100% !important;
 }
 #filemanager-file-desc{
     width: 100% !important;
