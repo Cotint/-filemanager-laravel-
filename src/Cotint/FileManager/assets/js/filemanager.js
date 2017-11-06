@@ -20,7 +20,11 @@ $(function(){
     $('.fileManager').attr('data-target','#fileManagerModal');
 
     $.each($('.fileManager'), function(index, item){
-        $('<div class="images-list"></div>').insertAfter(this);
+        $(this).wrap('<div class="file-manager-wrapper'+index+'"></div>');
+        // console.log($(this).parent().find('.images-list').length == 0);
+        if ($(this).parent().find('.images-list').length === 0){
+            $('<div class="images-list"></div>').appendTo($(this).parent());
+        }
         $(this).click(function(){
             fileMangerButton = this;
             console.log(fileMangerButton);
@@ -29,58 +33,59 @@ $(function(){
 
     $(document).on('click','.select-image',function(){
         var selected_images = $('.dz-image img.selected');
-        $.each(selected_images, function(key, value){
-            var image_url = $(value).attr('src');
-            var image_id =  $(value).attr('data-id');
-            var alt = $('#filemanager-file-alt').val();
-            var title = $('#filemanager-file-title').val();
-            var description = $('#filemanager-file-desc').val();
-
-            $(value).attr('data-alt', alt);
-            $(value).attr('data-desc', description);
-            $(value).attr('data-title', title);
-
-            var field_name = $(fileMangerButton).attr('data-name') !== undefined ? $(fileMangerButton).attr('data-name'):'file';
-            console.log('aaaaaaaaaaaaaaaaaaaa');
-            console.log(field_name);
-            if ($(fileMangerButton).attr('data-type') === 'multi'){
-                var order = $(fileMangerButton).next('.images-list').find('img').length;
-                $(fileMangerButton).next('.images-list').append('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
-                    '<button type="button" class="btn btn-success filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
-                    '<input type="hidden" name="'+field_name+'['+image_id+'][url]" value="'+image_url+'"/> ' +
-                    '<input type="hidden" name="'+field_name+'['+image_id+'][id]" value="'+image_id+'"/> ' +
-                    '<input type="hidden" name="'+field_name+'['+image_id+'][name]" value="'+title+'"/> ' +
-                    '<input type="hidden" name="'+field_name+'['+image_id+'][alt]" value="'+alt+'"/> ' +
-                    '<input type="hidden" name="'+field_name+'['+image_id+'][description]" value="'+description+'"/> ' +
-                    '<input type="text" name="'+field_name+'['+image_id+'][order]" value="'+order+'"/> ' +
-                    '</div>'
-                );
-            } else {
-                $(fileMangerButton).next('.images-list').html('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
-                    '<button type="button" class="btn btn-success filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
-                    '<input type="hidden" name="'+field_name+'_url" value="'+image_url+'"/> ' +
-                    '<input type="hidden" name="'+field_name+'_id" value="'+image_id+'"/> ' +
-                    '<input type="hidden" name="'+field_name+'_name" value="'+title+'"/> ' +
-                    '<input type="hidden" name="'+field_name+'_alt" value="'+alt+'"/> ' +
-                    '<input type="hidden" name="'+field_name+'_description" value="'+description+'"/> ' +
-                    '</div>'
-                );
-            }
-
-            $.post('/filemanager/save-meta',{
-                id:image_id,
-                description:description,
-                title:title,
-                alt:alt
-            },function(data){
-
-            });
-        });
+        showImages(selected_images, fileMangerButton);
     });
+
+
 
     $(document).on('click','.filemanager-remove-image',function(e){
         if (confirm('Are you sure?')){
             $(this).parent().remove();
         }
-    })
+    });
+
+    var prev_images = $('.prev-images');
+    $('span.image').addClass('hidden');
+
+    $.each(prev_images, function(index, item){
+        var images = $('span.image', this);
+        showImages(images, $('[data-name="'+$(this).attr("data-target")+'"]'));
+    });
 });
+
+function showImages(images, fileManagerButton){
+    $.each(images, function(key, value){
+        var image_url = $(value).attr('src');
+        var image_id =  $(value).attr('data-id');
+
+        var alt = $('#filemanager-file-alt').val();
+        var title = $('#filemanager-file-title').val();
+        var description = $('#filemanager-file-desc').val();
+
+        var field_name = $(fileManagerButton).attr('data-name') !== undefined ? $(fileManagerButton).attr('data-name'):'file';
+        if ($(fileManagerButton).attr('data-type') === 'multi'){
+            var order = $(fileManagerButton).parent().find('.images-list').find('img').length;
+            $(fileManagerButton).parent().find('.images-list').append('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
+                '<button type="button" class="btn btn-success filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
+                '<input type="hidden" name="'+field_name+'['+image_id+'][id]" value="'+image_id+'"/> ' +
+                '<input type="text" name="'+field_name+'['+image_id+'][order]" value="'+order+'"/> ' +
+                '</div>'
+            );
+        } else {
+            $(fileManagerButton).parent().find('.images-list').html('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
+                '<button type="button" class="btn btn-success filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
+                '<input type="hidden" name="'+field_name+'_id" value="'+image_id+'"/> ' +
+                '</div>'
+            );
+        }
+
+        $.post('/filemanager/save-meta',{
+            id:image_id,
+            description:description,
+            title:title,
+            alt:alt
+        },function(data){
+
+        });
+    });
+}
