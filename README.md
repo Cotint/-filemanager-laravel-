@@ -104,3 +104,13 @@ and the following hidden fields will be added to you form:
         <input name="my_files[1][name]" value="sunset" type="hidden">
         <input name="my_files[1][alt]" value="Sunset" type="hidden"> 
         <input name="my_files[1][description]" value="a beautiful sunset" type="hidden">
+
+## Edit a form contains files
+
+for editing forms contain some images you can do it in this way:
+
+        @if ($shop->icon_id or old('icon_id'))
+            <div data-target="icon" class="prev-images">
+                <span class="image"  data-id="{{ $shop->logo_id }}" src="{{ url('/uploaded_files/'.$shop->icon->name) }}" alt=""></span>
+            </div>
+        @endif
