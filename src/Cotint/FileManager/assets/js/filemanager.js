@@ -66,7 +66,7 @@ function showImages(images, fileManagerButton){
         if ($(fileManagerButton).attr('data-type') === 'multi'){
             var order = $(fileManagerButton).parent().find('.images-list').find('img').length;
             $(fileManagerButton).parent().find('.images-list').append('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
-                '<button type="button" class="btn btn-success filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
+                '<button type="button" class="btn filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
                 '<input type="hidden" name="'+field_name+'['+image_id+'][id]" value="'+image_id+'"/> ' +
                 '<input type="text" name="'+field_name+'['+image_id+'][order]" value="'+order+'"/> ' +
                 '</div>'
