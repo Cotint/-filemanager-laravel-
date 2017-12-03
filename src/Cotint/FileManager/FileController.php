@@ -44,7 +44,7 @@ class FileController extends Controller
                     'file' => 'mimes:application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 ]);
             }
-            if ($type == 'videos') {
+            if ($type == 'video') {
                 $this->validate($request, [
                     'file' => 'mimes:application/mp4,video/x-msvideo,video/x-flv,'
                 ]);
