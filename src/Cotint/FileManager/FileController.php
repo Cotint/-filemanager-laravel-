@@ -28,6 +28,7 @@ class FileController extends Controller
     {
         try {
             $uploadedFile = $request->file('file');
+
             if ($type == 'image') {
                 $this->validate($request, [
                     'file' => 'mimes:jpeg,gif,bmp,png,webp,image/x-icon'
@@ -46,7 +47,7 @@ class FileController extends Controller
             }
             if ($type == 'video') {
                 $this->validate($request, [
-                    'file' => 'mimes:application/mp4,video/x-msvideo,video/x-flv,'
+                    'file' => 'mimes:mp4,flv,avi,mov'
                 ]);
             }
             $file = new File();
@@ -67,7 +68,7 @@ class FileController extends Controller
                 'message' => 'نوع فایل اشتباه است'
             ], 421);
         } catch (\Exception $e) {
-            return json_encode(['result' => 'error', 'message' => $e->getTraceAsString().'::'.$e->getLine()]);
+            return response()->json(['result' => 'error', 'message' => $e->getMessage()], 402);
         }
     }
 

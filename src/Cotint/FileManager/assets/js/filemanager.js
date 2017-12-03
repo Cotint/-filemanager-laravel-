@@ -47,8 +47,60 @@ $(function(){
         }
 
     });
+
+    var prev_images = $('.prev-images');
+    $('span.image').addClass('hidden');
+
+    $.each(prev_images, function(index, item){
+        var images = $('span.image', this);
+        showImages(images, $('[data-name="'+$(this).attr("data-target")+'"]'));
+    });
+
 });
 
+
+function showImages(images, fileManagerButton){
+    $.each(images, function(key, value){
+        var image_url = $(value).attr('src');
+        var image_id =  $(value).attr('data-id');
+
+        var alt = $('#filemanager-file-alt').val();
+        var title = $('#filemanager-file-title').val();
+        var description = $('#filemanager-file-desc').val();
+        console.log('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
+        console.log($(fileManagerButton).parent());
+
+        var field_name = $(fileManagerButton).attr('data-name') !== undefined ? $(fileManagerButton).attr('data-name'):'file';
+        if ($(fileManagerButton).attr('data-type') === 'multi'){
+            var order = $(fileManagerButton).parent().find('.images-list').find('img').length;
+            $(fileManagerButton).parent().find('.images-list').append('' +
+                '<div class="col-md-3">' +
+                '<img src="'+image_url+'" height="100px">' +
+                '<button type="button" class="btn filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
+                '<input type="hidden" name="'+field_name+'['+image_id+'][id]" value="'+image_id+'"/> ' +
+                '<input type="hidden" name="'+field_name+'['+image_id+'][src]" value="'+image_url+'"/> ' +
+                '<input type="text" name="'+field_name+'['+image_id+'][order]" value="'+order+'"/> ' +
+                '</div>'
+            );
+        } else {
+            $(fileManagerButton).parent().find('.images-list').html('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
+                '<button type="button" class="btn btn-success filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
+                '<input type="hidden" name="'+field_name+'_id" value="'+image_id+'"/> ' +
+                '<input type="hidden" name="'+field_name+'_src" value="'+image_url+'"/> ' +
+                '</div>'
+            );
+        }
+
+        $.post('/filemanager/save-meta',{
+            id:image_id,
+            description:description,
+            title:title,
+            alt:alt
+        },function(data){
+
+        });
+    });
+}
 
 
 function fillDropzone(data, dropzone){

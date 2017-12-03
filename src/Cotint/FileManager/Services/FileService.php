@@ -18,6 +18,9 @@ class FileService
         'jpg', 'png', 'jpeg', 'gif', 'svg',
     ];
 
+    private $videoExtensions = [
+      'mp4','avi','flv'
+    ];
     /**
      * document extensions
      * @var array
@@ -69,6 +72,11 @@ class FileService
             //TODO: move hardcoded icon path to config
             return url('/cotint/fileManager/images/archive.png');
         }
+//        dd($this->isVideo($file));
+        if ($this->isVideo($file)) {
+            //TODO: move hardcoded icon path to config
+            return url('/cotint/fileManager/images/video.png');
+        }
 
         //TODO: move hardcoded icon path to config
         return url('/cotint/fileManager/images/unknown.png');
@@ -96,6 +104,20 @@ class FileService
     public function isImage($file)
     {
         if (in_array($this->getFileType($file), $this->imageExtensions)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $file
+     *
+     * @return bool
+     */
+    public function isVideo($file)
+    {
+        if (in_array($this->getFileType($file), $this->videoExtensions)) {
             return true;
         }
 
