@@ -52,7 +52,10 @@
                     <button class="btn btn-default btn-class upload-button" type="button"> <i class="fa fa-plus" aria-hidden="true"></i> لطفا عکس خود را اپلود کنید </button>
                 </div>
                 <div class="col-md-12 col-xs-4">
-                    <div class="drop-col" id="deopzone">
+                    <div class="message text-center">
+
+                    </div>
+                    <div class="drop-col" id="dropzone">
 
                     </div>
                 </div>
@@ -64,27 +67,61 @@
 
 @section('scripts')
 <script>
-    Dropzone.autoDiscover = false;
-    $(function(){
-        kamaDatepicker('datepicker');
 
-        var dropzone = new Dropzone("div#deopzone", {
-            url: "/filemanager/upload",
+    $(function(){
+
+        prevType = type;
+
+        var fileTypes = ['image','video','document','archive'];
+
+
+        if (type !== undefined && fileTypes.indexOf(type) !== -1){
+            if (type === 'image') {
+                url = 'images';
+            } else if (type === 'video') {
+                url = 'videos';
+            }else if (type === 'document') {
+                url = 'docs';
+            }else if (type === 'archive') {
+                url = 'archives';
+            }
+            $(document).find('#media-type').val(url);
+            $(document).find('#media-type').attr('disabled',true);
+        } else {
+            url = 'all';
+        }
+
+
+        dropzone = new Dropzone("div#dropzone", {
+            url: "/filemanager/upload/"+ type,
             clickable: '.upload-button'
         });
-        $.getJSON('/filemanager/all', function(data) { // get the json response
+
+
+        $('.drop-col').append('<div class="loading" style="text-align: center;"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>');
+        $.getJSON('/filemanager/'+url, function(data) { // get the json response
+            $('.drop-col').find('.loading').remove();
             fillDropzone(data, dropzone);
         });
+
+
 
         dropzone.on('init', function(){
 
         });
         dropzone.on("success", function (file, data) {
-            console.log('successsssssssss');
-            console.log(JSON.parse(data));
+            console.log('aaaaaaaaaaaa');
+            console.log(data);
             $(file.previewElement).find('.dz-image img').attr('data-id',JSON.parse(data).id);
             $(file.previewElement).find('.dz-image img').attr('src',JSON.parse(data).filename);
         });
+        dropzone.on("error", function (file, response) {
+            console.log(file);
+            $(file.previewElement).remove();
+            $('.message').css('color','red').html(response.message);
+            return false;
+        });
+
         dropzone.on("addedfile", function (file) {
             var _this = this;
 
@@ -117,11 +154,17 @@
 
 
         $(document).on('click','.dz-image', function(){
+
+            console.log('type')
+            console.log($(fileMangerButton).attr('data-type'));
             $(".dz-image").css("border","1px solid #ccc");
             $(this).css("border","3px solid #000");
             $('.div-class').addClass('hidden');
-            $(this).parent().find('.div-class').removeClass('hidden');
             $('img.selected').removeClass('selected');
+            $('.dz-image.dz-selected').removeClass('dz-selected');
+
+            $(this).parent().find('.div-class').removeClass('hidden');
+            $(this).addClass('dz-selected');
             $(this).find('img').addClass('selected');
             $('#filemanager-file-name').val($(this).find('img').attr('data-name'));
             $('#filemanager-file-title').val($(this).find('img').attr('data-title'));
@@ -129,20 +172,8 @@
             $('#filemanager-file-alt').val($(this).find('img').attr('data-alt'));
         });
 
-//        $(document).on('click','.filemanager-remove-image',function(){
-//            if (confirm("Are you sure?")){
-//                var server_file = $('#filemanager-file-name').val();
-//                $.post("/filemanager/delete", { file: server_file }, function(){
-//                    _this.removeFile(file);
-//                });
-//            }
-//        })
-
-
         $(document).on('change', '#media-type',function(){
-
             var type = $(this).find('option:selected').val();
-//            alert('/filemanager/get'+type);
             dropzone.removeAllFiles(true);
             $('.drop-col').append('<div class="loading" style="text-align: center;"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>');
 
@@ -162,8 +193,8 @@
             $('.drop-col').append('<div class="loading" style="text-align: center;"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>');
 
 
-            if (query.length == 0){
-                $.getJSON('/filemanager/all', function(data) { // get the json response
+            if (query.length === 0){
+                $.getJSON('/filemanager/'+url, function(data) { // get the json response
                     $('.drop-col').find('.loading').remove();
                     fillDropzone(data, dropzone);
                 });
@@ -174,30 +205,77 @@
                 $('.drop-col').find('.loading').remove();
                 fillDropzone(data, dropzone);
             });
-        })
+        });
+
+
+
+        $(document).on('click','.filemanager-remove-image',function(e){
+            if (confirm('Are you sure?')){
+                $(this).parent().remove();
+            }
+        });
+
+        var prev_images = $('.prev-images');
+        $('span.image').addClass('hidden');
+
+        $.each(prev_images, function(index, item){
+            var images = $('span.image', this);
+            showImages(images, $('[data-name="'+$(this).attr("data-target")+'"]'));
+        });
+
+        $('.select-image').on('click',function(){
+            var selected_images = $('.dz-image img.selected');
+            cnt += 1;
+            console.log(cnt);
+            // console.log(fileMangerButton);
+            showImages(selected_images, fileMangerButton);
+        });
+
 
     });
 
+    function showImages(images, fileManagerButton){
+        $.each(images, function(key, value){
+            var image_url = $(value).attr('src');
+            var image_id =  $(value).attr('data-id');
 
-    function fillDropzone(data, dropzone){
-        $.each(data, function(key,value){ //loop through it
-            var mockFile = {
-                name: value.name,
-                size: value.size,
-                accepted:true,
-                id:value.id,
-                title:value.title,
-                desc:value.desc,
-                alt:value.alt
-            };
-            dropzone.emit("addedfile", mockFile);
-            dropzone.files.push(mockFile);
-            dropzone.emit("thumbnail", mockFile, mockFile.name);
-            dropzone.emit("complete", mockFile);
+            var alt = $('#filemanager-file-alt').val();
+            var title = $('#filemanager-file-title').val();
+            var description = $('#filemanager-file-desc').val();
+            console.log('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
+            console.log($(fileManagerButton).parent());
+
+            var field_name = $(fileManagerButton).attr('data-name') !== undefined ? $(fileManagerButton).attr('data-name'):'file';
+            if ($(fileManagerButton).attr('data-type') === 'multi'){
+                var order = $(fileManagerButton).parent().find('.images-list').find('img').length;
+                $(fileManagerButton).parent().find('.images-list').append('' +
+                    '<div class="col-md-3">' +
+                    '<img src="'+image_url+'" height="100px">' +
+                    '<button type="button" class="btn filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
+                    '<input type="hidden" name="'+field_name+'['+image_id+'][id]" value="'+image_id+'"/> ' +
+                    '<input type="hidden" name="'+field_name+'['+image_id+'][src]" value="'+image_url+'"/> ' +
+                    '<input type="text" name="'+field_name+'['+image_id+'][order]" value="'+order+'"/> ' +
+                    '</div>'
+                );
+            } else {
+                $(fileManagerButton).parent().find('.images-list').html('<div class="col-md-3"><img src="'+image_url+'" height="100px">' +
+                    '<button type="button" class="btn btn-success filemanager-remove-image"><i class="glyphicon glyphicon-trash"></i> </button> ' +
+                    '<input type="hidden" name="'+field_name+'_id" value="'+image_id+'"/> ' +
+                    '<input type="hidden" name="'+field_name+'_src" value="'+image_url+'"/> ' +
+                    '</div>'
+                );
+            }
+
+            $.post('/filemanager/save-meta',{
+                id:image_id,
+                description:description,
+                title:title,
+                alt:alt
+            },function(data){
+
+            });
         });
     }
-
-
 
 
 </script>

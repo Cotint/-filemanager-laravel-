@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Cotint\FileManager\models\File;
 use Cotint\FileManager\Services\FileService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class FileController extends Controller
 {
@@ -23,10 +24,31 @@ class FileController extends Controller
         return view('fileManager::index', ['files' => $files]);
     }
 
-    public function upload(Request $request)
+    public function upload(Request $request, $type = null)
     {
         try {
             $uploadedFile = $request->file('file');
+            if ($type == 'image') {
+                $this->validate($request, [
+                    'file' => 'mimes:jpeg,gif,bmp,png,webp,image/x-icon'
+                ]);
+            }
+
+            if ($type == 'archive') {
+                $this->validate($request, [
+                    'file' => 'mimes:application/x-7z-compressed,application/zip,application/x-tar,application/x-rar-compressed'
+                ]);
+            }
+            if ($type == 'docs') {
+                $this->validate($request, [
+                    'file' => 'mimes:application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                ]);
+            }
+            if ($type == 'videos') {
+                $this->validate($request, [
+                    'file' => 'mimes:application/mp4,video/x-msvideo,video/x-flv,'
+                ]);
+            }
             $file = new File();
             $file->name = $uploadedFile->getClientOriginalName();
             $file->size = $uploadedFile->getClientSize();
@@ -36,9 +58,14 @@ class FileController extends Controller
 
             return json_encode([
                 'result' => 'ok',
-                'filename' => $this->fileService->getFileThumb(url('/uploaded_files/'.$uploadedFile->getClientOriginalName())),
+                'filename' => $this->fileService->getFileThumb(url('/uploaded_files/' . $uploadedFile->getClientOriginalName())),
                 'id' => $file->id,
             ]);
+        }catch (ValidationException $exception){
+            return response()->json([
+                'result' => 'error',
+                'message' => 'نوع فایل اشتباه است'
+            ], 421);
         } catch (\Exception $e) {
             return json_encode(['result' => 'error', 'message' => $e->getTraceAsString().'::'.$e->getLine()]);
         }
