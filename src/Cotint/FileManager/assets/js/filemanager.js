@@ -48,6 +48,13 @@ $(function(){
 
     });
 
+
+    $(document).on('click','.filemanager-remove-image',function(e){
+        if (confirm('Are you sure?')){
+            $(this).parent().remove();
+        }
+    });
+
     var prev_images = $('.prev-images');
     $('span.image').addClass('hidden');
 
@@ -63,6 +70,7 @@ function showImages(images, fileManagerButton){
     $.each(images, function(key, value){
         var image_url = $(value).attr('src');
         var image_id =  $(value).attr('data-id');
+        var order = $(value).attr('data-order');
 
         var alt = $('#filemanager-file-alt').val();
         var title = $('#filemanager-file-title').val();
@@ -72,7 +80,7 @@ function showImages(images, fileManagerButton){
 
         var field_name = $(fileManagerButton).attr('data-name') !== undefined ? $(fileManagerButton).attr('data-name'):'file';
         if ($(fileManagerButton).attr('data-type') === 'multi'){
-            var order = $(fileManagerButton).parent().find('.images-list').find('img').length;
+            order = order === undefined ? $(fileManagerButton).parent().find('.images-list').find('img').length: order;
             $(fileManagerButton).parent().find('.images-list').append('' +
                 '<div class="col-md-3">' +
                 '<img src="'+image_url+'" height="100px">' +

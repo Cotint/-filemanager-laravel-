@@ -211,13 +211,6 @@
 
 
 
-        $(document).on('click','.filemanager-remove-image',function(e){
-            if (confirm('Are you sure?')){
-                $(this).parent().remove();
-            }
-        });
-
-
         $('.select-image').on('click',function(){
             var selected_images = $('.dz-image img.selected');
             cnt += 1;
