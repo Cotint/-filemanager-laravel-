@@ -31,23 +31,23 @@ class FileController extends Controller
 
             if ($type == 'image') {
                 $this->validate($request, [
-                    'file' => 'mimes:jpeg,gif,bmp,png,webp,image/x-icon'
+                    'file' => 'mimes:jpg,jpeg,gif,bmp,png,webp,icon'
                 ]);
             }
 
             if ($type == 'archive') {
                 $this->validate($request, [
-                    'file' => 'mimes:application/x-7z-compressed,application/zip,application/x-tar,application/x-rar-compressed'
+                    'file' => 'mimes:zip,7zip,rar,tar,tgz,gz,gtar,'
                 ]);
             }
             if ($type == 'docs') {
                 $this->validate($request, [
-                    'file' => 'mimes:application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    'file' => 'mimes:doc,docx,xlsx,xls,txt,text,rtf'
                 ]);
             }
             if ($type == 'video') {
                 $this->validate($request, [
-                    'file' => 'mimes:mp4,flv,avi,mov'
+                    'file' => 'mimes:mp4,flv,avi,mov,webm,wmv,3gp,mpeg,mpg,movie'
                 ]);
             }
             $file = new File();
